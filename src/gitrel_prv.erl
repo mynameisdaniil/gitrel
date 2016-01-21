@@ -38,8 +38,13 @@ do(State) ->
           {error, {?MODULE, "Can't find relx release configuration"}};
         {release, {App, Version}, _} ->
           io:format("App:\t~p\nVer:\t~s\n", [App, Version]),
-          JSON = jsx:encode(100500),
-          io:format("Payload:\n~s\n", [JSON]),
+          JSON = io_lib:format("{\"tag_name\": \"~s\", \"name\": \"~s ~s\"}", [Version, App, Version]),
+          AuthString = io_lib:format("~s:~s", [proplists:get_value(user, GitrelConfig), proplists:get_value(token, GitrelConfig)]),
+          AuthStringBase64 = base64:encode_to_string(lists:flatten(AuthString)),
+          AuthHeader = io_lib:format("Basic ~s", [AuthStringBase64]),
+          io:format("WWW-Authenticate: ~s\n", [AuthHeader]),
+          {ok, Result} = httpc:request(post, {Url, [{"WWW-Authenticate", AuthHeader}, {"User-Agent", "GitRel Rebar plugin/Erlang httpc"}], "application/json", JSON}, [{timeout, 60*1000}, {ssl, [{verify, 0}]}], [{sync, true}]),
+          io:format("Result: ~p", [Result]),
           {ok, State}
       end
   end.
