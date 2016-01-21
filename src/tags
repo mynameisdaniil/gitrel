@@ -1,5 +1,5 @@
 !_TAG_FILE_SORTED	2	/0=unsorted, 1=sorted, 2=foldcase/
-DEPS	/home/daniil/projects/my/gitrel/src/gitrel_prv.erl	/^-define(DEPS, [tar]).$/;"	d	language:Erlang
+DEPS	/home/daniil/projects/my/gitrel/src/gitrel_prv.erl	/^-define(DEPS, []).$/;"	d	language:Erlang
 do	/home/daniil/projects/my/gitrel/src/gitrel_prv.erl	/^do(State) ->$/;"	f	language:Erlang	module:gitrel_prv
 format_error	/home/daniil/projects/my/gitrel/src/gitrel_prv.erl	/^format_error(Reason) ->$/;"	f	language:Erlang	module:gitrel_prv
 gitrel_prv	/home/daniil/projects/my/gitrel/src/gitrel_prv.erl	/^-module(gitrel_prv).$/;"	m	language:Erlang
