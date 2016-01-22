@@ -17,6 +17,15 @@ Add the plugin to your rebar config:
         { gitrel, ".*", {git, "git@host:user/gitrel.git", {tag, "0.1.0"}}}
     ]}.
 
+Then add following section to rebar config:
+
+
+    {gitrel, [
+              {user, "mynameisdaniil"},
+              {token, "you_github_acess_token"},
+              {repo, "mynameisdaniil/gitrel"}
+             ]}.
+
 Then just call your plugin directly in an existing application:
 
 
