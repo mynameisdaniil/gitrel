@@ -42,7 +42,7 @@ do(State) ->
           AuthStringBase64 = base64:encode_to_string(lists:flatten(AuthString)),
           AuthHeader = io_lib:format("Basic ~s", [AuthStringBase64]),
           rebar_api:info("URL:\t~s\n", [Url]),
-          rebar_api:info("App:\t~s\nVer:\t~s\n", [App, Version]),
+          rebar_api:info("App:~s\tVer:~s\n", [App, Version]),
           CreateReleaseResult = post(Url, AuthHeader, "application/json", JSON),
           case CreateReleaseResult of
             {ok, {{_, 201, _}, Headers, _}} ->
