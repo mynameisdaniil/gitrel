@@ -41,20 +41,20 @@ do(State) ->
           AuthString = io_lib:format("~s:~s", [proplists:get_value(user, GitrelConfig), proplists:get_value(token, GitrelConfig)]),
           AuthStringBase64 = base64:encode_to_string(lists:flatten(AuthString)),
           AuthHeader = io_lib:format("Basic ~s", [AuthStringBase64]),
-          io:format("URL:\t~s\n", [Url]),
-          io:format("App:\t~s\nVer:\t~s\n", [App, Version]),
+          rebar_api:info("URL:\t~s\n", [Url]),
+          rebar_api:info("App:\t~s\nVer:\t~s\n", [App, Version]),
           CreateReleaseResult = post(Url, AuthHeader, "application/json", JSON),
           case CreateReleaseResult of
             {ok, {{_, 201, _}, Headers, _}} ->
               ReleaseName = io_lib:format("~s-~s.tar.gz", [App, Version]),
               Uploads = re:replace(proplists:get_value("location", Headers), "api\.github\.com", "uploads.github.com"),
               UploadUrl = lists:flatten(io_lib:format("~s/assets?name=~s", [Uploads, http_uri:encode(ReleaseName)])),
-              io:format("UploadUrl: ~p\n", [UploadUrl]),
+              rebar_api:info("UploadUrl: ~p\n", [UploadUrl]),
               {ok, ReleaseTGZ} = file:read_file(filename:join([Dir, "_build/default/rel/", App, ReleaseName])),
               UploadReleaseResult = post(UploadUrl, AuthHeader, "application/gzip", ReleaseTGZ),
               case UploadReleaseResult of
                 {ok, {{_, 201, _}, _, _}} ->
-                  io:format("Release ~s successfully uploaded!\n", [ReleaseName]),
+                  rebar_api:info("Release ~s successfully uploaded!\n", [ReleaseName]),
                   {ok, State};
                 {ok, {{_, StatusCode, StatusMessage}}} ->
                   {error, {?MODULE, lists:flatten(io_lib:format("Can't upload assets to GitHub release: ~B/~s", [StatusCode, StatusMessage]))}};
